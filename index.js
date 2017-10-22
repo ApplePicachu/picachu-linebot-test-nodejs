@@ -11,26 +11,11 @@ bot.on('message', function (event) {
     console.log(event); //把收到訊息的 event 印出來看看
     event.reply({ type: 'text', text: event.message.text })
     event.reply({
-        // type: "template",
-        // altText: "this is a buttons template",
-        // template: {
-        //     type: "buttons",
-        //     thumbnailImageUrl: "https://i.pinimg.com/736x/76/47/9d/76479dd91dc55c2768ddccfc30a4fbf5--pikachu-halloween-costume-diy-halloween-costumes.jpg",
-        //     title: "Menu",
-        //     text: "Please select",
-        //     actions: [
-        //         {
-        //             type: "postback",
-        //             label: "Buy",
-        //             data: "action=buy&itemid=123"
-        //         }
-        //     ]
-        // }
         type: 'template',
         altText: 'this is a buttons template',
         template: {
             type: 'buttons',
-            thumbnailImageUrl: 'https://i.pinimg.com/736x/76/47/9d/76479dd91dc55c2768ddccfc30a4fbf5--pikachu-halloween-costume-diy-halloween-costumes.jpg',
+            thumbnailImageUrl: process.env.LogoURL,
             title: 'Menu',
             text: 'Please select',
             actions: [{
