@@ -1,15 +1,37 @@
 var linebot = require('linebot');
 var express = require('express');
+var Airtable = require('airtable');
+
+var airtableBase = new Airtable({apiKey: process.env.AirtableApiKey}).base(process.env.app5IsOGHJrhPQire);
 
 var bot = linebot({
-    channelId: process.env.ChannelId,
-    channelSecret: process.env.ChannelSecret,
-    channelAccessToken: process.env.ChannelAccessToken,
+    channelId: process.env.LineBotChannelId,
+    channelSecret: process.env.LineBotChannelSecret,
+    channelAccessToken: process.env.LineBotChannelAccessToken,
     varify: true
 });
 bot.on('message', function (event) {
     console.log(event); //把收到訊息的 event 印出來看看
-    event.reply({ type: 'text', text: event.message.text })
+    ase('居家喘息').select({
+        // Selecting the first 3 records in Grid view:
+        maxRecords: 3,
+        view: "Grid view"
+    }).eachPage(function page(records, fetchNextPage) {
+        // This function (`page`) will get called for each page of records.
+    
+        records.forEach(function(record) {
+            console.log('Retrieved', record.get('單位名稱'));
+        });
+    
+        // To fetch the next page of records, call `fetchNextPage`.
+        // If there are more records, `page` will get called again.
+        // If there are no more records, `done` will get called.
+        fetchNextPage();
+    
+    }, function done(err) {
+        if (err) { console.error(err); return; }
+    });    
+    event.reply({ type: 'text', text: event.message.text });
     event.reply({
         type: 'template',
         altText: 'this is a buttons template',
@@ -32,7 +54,7 @@ bot.on('message', function (event) {
                 uri: 'http://google.com'
             }]
         }
-    })
+    });
     
 });
 
