@@ -1,0 +1,19 @@
+{
+  "name": "linechat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://git.heroku.com/picachu-linebot-test-nodejs.git"
+  },
+  "author": "Picachu",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.2",
+    "linebot": "^1.3.0"
+  }
+}
