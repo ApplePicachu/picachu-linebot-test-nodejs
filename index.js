@@ -19,12 +19,12 @@ bot.on('message', function (event) {
         view: "Grid view"
     }).eachPage(function page(records, fetchNextPage) {
         // This function (`page`) will get called for each page of records.
-
+        var replyString = "";
         records.forEach(function (record) {
             console.log('Retrieved', record.get('單位名稱'));
-            event.reply({type: 'text', text: record.get('單位名稱')});
+            replyString += ecord.get('單位名稱')+'\n';
         });
-
+        event.reply({type: 'text', text:replyString});
         // To fetch the next page of records, call `fetchNextPage`.
         // If there are more records, `page` will get called again.
         // If there are no more records, `done` will get called.
