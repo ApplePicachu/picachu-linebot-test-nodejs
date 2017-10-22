@@ -12,7 +12,7 @@ var bot = linebot({
 });
 bot.on('message', function (event) {
     console.log(event); //把收到訊息的 event 印出來看看
-    ase('居家喘息').select({
+    airtableBase('居家喘息').select({
         // Selecting the first 3 records in Grid view:
         maxRecords: 3,
         view: "Grid view"
