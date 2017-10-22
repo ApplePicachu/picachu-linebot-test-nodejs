@@ -5,9 +5,11 @@ var bot = linebot({
     channelId: 1540241808,
     channelSecret: '8f4303ea0d34c907e83b5bbf2fca3c54',
     channelAccessToken: 'URz0aIlfwkPoCvawLRwdhkVS+YV0we0qfXVpmqsY58/qDwNpqnjP6+oGCutcUmQbn1gRpGXcl8jkIYANj2dH5bFVPDes2FhZH9KEyE1RJxHxEFku2Yo/La/WV6fZMa5cGMvZ6MAQgVdZdxDc9BghLwdB04t89/1O/w1cDnyilFU='
+    varify: true
 });
 bot.on('message', function (event) {
     console.log(event); //把收到訊息的 event 印出來看看
+    event.reply({type: 'text', text: event.message.text})
 });
 
 const app = express();
