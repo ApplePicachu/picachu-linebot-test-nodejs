@@ -22,7 +22,7 @@ bot.on('message', function (event) {
 
         records.forEach(function (record) {
             console.log('Retrieved', record.get('單位名稱'));
-            event.reply(type: 'text', text: record.get('單位名稱'))
+            event.reply({type: 'text', text: record.get('單位名稱')});
         });
 
         // To fetch the next page of records, call `fetchNextPage`.
