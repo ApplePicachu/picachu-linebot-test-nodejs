@@ -56,7 +56,7 @@ bot.on('message', function (event) {
     //             uri: 'http://google.com'
     //         }]
     //     }
-    });
+    // });
 
 });
 
