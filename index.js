@@ -24,7 +24,31 @@ bot.on('message', function (event) {
             console.log('Retrieved', record.get('單位名稱'));
             replyString += record.get('單位名稱')+'\n';
         });
-        event.reply({type: 'text', text:replyString});
+        // event.reply({type: 'text', text:replyString});
+        // event.reply({ type: 'text', text: event.message.text });
+        event.reply({
+            type: 'template',
+            altText: 'this is a buttons template',
+            template: {
+                type: 'buttons',
+                thumbnailImageUrl: process.env.LogoURL,
+                title: replyString,
+                text: 'Please select',
+                actions: [{
+                    type: 'postback',
+                    label: 'Buy',
+                    data: 'action=buy&itemid=123'
+                }, {
+                    type: 'postback',
+                    label: 'Add to cart',
+                    data: 'action=add&itemid=123'
+                }, {
+                    type: 'uri',
+                    label: 'View detail',
+                    uri: 'http://google.com'
+                }]
+            }
+        });
         // To fetch the next page of records, call `fetchNextPage`.
         // If there are more records, `page` will get called again.
         // If there are no more records, `done` will get called.
@@ -33,30 +57,7 @@ bot.on('message', function (event) {
     }, function done(err) {
         if (err) { console.error(err); return; }
     });
-    // event.reply({ type: 'text', text: event.message.text });
-    // event.reply({
-    //     type: 'template',
-    //     altText: 'this is a buttons template',
-    //     template: {
-    //         type: 'buttons',
-    //         thumbnailImageUrl: process.env.LogoURL,
-    //         title: event.message.text,
-    //         text: 'Please select',
-    //         actions: [{
-    //             type: 'postback',
-    //             label: 'Buy',
-    //             data: 'action=buy&itemid=123'
-    //         }, {
-    //             type: 'postback',
-    //             label: 'Add to cart',
-    //             data: 'action=add&itemid=123'
-    //         }, {
-    //             type: 'uri',
-    //             label: 'View detail',
-    //             uri: 'http://google.com'
-    //         }]
-    //     }
-    // });
+    
 
 });
 
