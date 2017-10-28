@@ -36,7 +36,7 @@ bot.on('message', function (event) {
                 text: 'Please select',
                 actions: [{
                     type: 'datetimepicker',
-                    label: 'datetime',
+                    label: '選擇時間',
                     data: 'action=add&itemid=123',
                     mode: 'datetime'
                 }/*, {
