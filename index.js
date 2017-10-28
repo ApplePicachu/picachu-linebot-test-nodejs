@@ -35,9 +35,9 @@ bot.on('message', function (event) {
                 title: replyString,
                 text: 'Please select',
                 actions: [{
-                    type: 'postback',
-                    label: 'Buy',
-                    data: 'action=buy&itemid=123'
+                    type: 'datetimepicker',
+                    data: 'datetimetest',
+                    mode: 'datetime'
                 }, {
                     type: 'postback',
                     label: 'Add to cart',
