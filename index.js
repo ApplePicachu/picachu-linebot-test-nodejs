@@ -36,9 +36,10 @@ bot.on('message', function (event) {
                 text: 'Please select',
                 actions: [{
                     type: 'datetimepicker',
-                    data: 'datetimetest',
+                    label: 'datetime',
+                    data: 'action=add&itemid=123',
                     mode: 'datetime'
-                }, {
+                }/*, {
                     type: 'postback',
                     label: 'Add to cart',
                     data: 'action=add&itemid=123'
@@ -46,7 +47,7 @@ bot.on('message', function (event) {
                     type: 'uri',
                     label: 'View detail',
                     uri: 'http://google.com'
-                }]
+                }*/]
             }
         });
         // To fetch the next page of records, call `fetchNextPage`.
