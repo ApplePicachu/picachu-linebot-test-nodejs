@@ -19,7 +19,15 @@ var bot = linebot({
 });
 bot.on('message', function (event) {
     console.log(event); //把收到訊息的 event 印出來看看
-
+    //Print out now
+    client.query('SELECT NOW() as now', (err, res) => {
+        if (err) {
+          console.log(err.stack)
+        } else {
+          console.log(res.rows[0])
+        }
+      })
+      
     // airtableBase('居家喘息').select({
     //     // Selecting the first 3 records in Grid view:
     //     maxRecords: 3,
