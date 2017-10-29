@@ -3,10 +3,10 @@ var express = require('express');
 var Airtable = require('airtable');
 var Client = require('pg');
 
-// const client = new Client({
-//     connectionString: process.env.DATABASE_URL,
-//     ssl: true,
-// });
+const client = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: true,
+});
 // client.connect();
 
 var airtableBase = new Airtable({ apiKey: process.env.AirtableApiKey }).base(process.env.AirtableTableKey);
@@ -18,54 +18,53 @@ var bot = linebot({
     varify: true
 });
 bot.on('message', function (event) {
-    console.log(process.env.DATABASE_URL);
     console.log(event); //把收到訊息的 event 印出來看看
 
-    airtableBase('居家喘息').select({
-        // Selecting the first 3 records in Grid view:
-        maxRecords: 3,
-        view: "Grid view"
-    }).eachPage(function page(records, fetchNextPage) {
-        // This function (`page`) will get called for each page of records.
-        var replyString = "";
-        records.forEach(function (record) {
-            console.log('Retrieved', record.get('單位名稱'));
-            replyString += record.get('單位名稱') + '\n';
-        });
-        // event.reply({type: 'text', text:replyString});
-        // event.reply({ type: 'text', text: event.message.text });
-        event.reply({
-            type: 'template',
-            altText: 'this is a buttons template',
-            template: {
-                type: 'buttons',
-                thumbnailImageUrl: process.env.LogoURL,
-                title: replyString,
-                text: 'Please select',
-                actions: [{
-                    type: 'datetimepicker',
-                    label: '選擇時間',
-                    data: 'action=add&itemid=123',
-                    mode: 'datetime'
-                }/*, {
-                    type: 'postback',
-                    label: 'Add to cart',
-                    data: 'action=add&itemid=123'
-                }, {
-                    type: 'uri',
-                    label: 'View detail',
-                    uri: 'http://google.com'
-                }*/]
-            }
-        });
-        // To fetch the next page of records, call `fetchNextPage`.
-        // If there are more records, `page` will get called again.
-        // If there are no more records, `done` will get called.
-        fetchNextPage();
+    // airtableBase('居家喘息').select({
+    //     // Selecting the first 3 records in Grid view:
+    //     maxRecords: 3,
+    //     view: "Grid view"
+    // }).eachPage(function page(records, fetchNextPage) {
+    //     // This function (`page`) will get called for each page of records.
+    //     var replyString = "";
+    //     records.forEach(function (record) {
+    //         console.log('Retrieved', record.get('單位名稱'));
+    //         replyString += record.get('單位名稱') + '\n';
+    //     });
+    //     // event.reply({type: 'text', text:replyString});
+    //     // event.reply({ type: 'text', text: event.message.text });
+    //     event.reply({
+    //         type: 'template',
+    //         altText: 'this is a buttons template',
+    //         template: {
+    //             type: 'buttons',
+    //             thumbnailImageUrl: process.env.LogoURL,
+    //             title: replyString,
+    //             text: 'Please select',
+    //             actions: [{
+    //                 type: 'datetimepicker',
+    //                 label: '選擇時間',
+    //                 data: 'action=add&itemid=123',
+    //                 mode: 'datetime'
+    //             }/*, {
+    //                 type: 'postback',
+    //                 label: 'Add to cart',
+    //                 data: 'action=add&itemid=123'
+    //             }, {
+    //                 type: 'uri',
+    //                 label: 'View detail',
+    //                 uri: 'http://google.com'
+    //             }*/]
+    //         }
+    //     });
+    //     // To fetch the next page of records, call `fetchNextPage`.
+    //     // If there are more records, `page` will get called again.
+    //     // If there are no more records, `done` will get called.
+    //     fetchNextPage();
 
-    }, function done(err) {
-        if (err) { console.error(err); return; }
-    });
+    // }, function done(err) {
+    //     if (err) { console.error(err); return; }
+    // });
 
 
 });
