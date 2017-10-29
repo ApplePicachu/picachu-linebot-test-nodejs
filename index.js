@@ -18,6 +18,7 @@ var bot = linebot({
     varify: true
 });
 bot.on('message', function (event) {
+    console.log(process.env.DATABASE_URL);
     console.log(event); //把收到訊息的 event 印出來看看
 
     airtableBase('居家喘息').select({
