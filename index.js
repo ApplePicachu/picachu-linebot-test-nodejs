@@ -1,6 +1,13 @@
 var linebot = require('linebot');
 var express = require('express');
 var Airtable = require('airtable');
+const Client = require('pg');
+
+const client = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: true,
+});
+client.connect();
 
 var airtableBase = new Airtable({ apiKey: process.env.AirtableApiKey }).base(process.env.AirtableTableKey);
 
@@ -22,7 +29,7 @@ bot.on('message', function (event) {
         var replyString = "";
         records.forEach(function (record) {
             console.log('Retrieved', record.get('單位名稱'));
-            replyString += record.get('單位名稱')+'\n';
+            replyString += record.get('單位名稱') + '\n';
         });
         // event.reply({type: 'text', text:replyString});
         // event.reply({ type: 'text', text: event.message.text });
@@ -58,7 +65,7 @@ bot.on('message', function (event) {
     }, function done(err) {
         if (err) { console.error(err); return; }
     });
-    
+
 
 });
 
