@@ -1,13 +1,13 @@
 var linebot = require('linebot');
 var express = require('express');
 var Airtable = require('airtable');
-var Client = require('pg');
+const {Client} = require('pg');
 
 const client = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: true,
 });
-// client.connect();
+client.connect();
 
 var airtableBase = new Airtable({ apiKey: process.env.AirtableApiKey }).base(process.env.AirtableTableKey);
 
