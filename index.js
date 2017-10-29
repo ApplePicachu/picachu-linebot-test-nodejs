@@ -3,6 +3,8 @@ var express = require('express');
 var Airtable = require('airtable');
 const {Client} = require('pg');
 
+console.log(process.env.DATABASE_URL);
+
 const client = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: true,
@@ -19,7 +21,7 @@ var bot = linebot({
 });
 bot.on('message', function (event) {
     console.log(event); //把收到訊息的 event 印出來看看
-    //Print out now
+    //Print out now()
     client.query('SELECT NOW() as now', (err, res) => {
         if (err) {
           console.log(err.stack)
