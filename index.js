@@ -110,7 +110,7 @@ app.get('/api/parse/google_form', function(req, res){
         if (err != null){
             console.log(err);
             res.status(400);
-            res.send(err);
+            res.send(err.toString());
         }
         res.send(data);
         // fs.writeFile('form.json', JSON.stringify(data), 'utf8', null);
