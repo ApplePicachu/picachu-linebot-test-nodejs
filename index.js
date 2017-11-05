@@ -2,6 +2,7 @@ var linebot = require('linebot');
 var express = require('express');
 var Airtable = require('airtable');
 const {Client} = require('pg');
+const gfp = require('./google_form_parser');
 
 console.log(process.env.DATABASE_URL);
 
@@ -100,7 +101,20 @@ const linebotParser = bot.parser();
 app.post('/', linebotParser);
 
 app.get('/api/parse/google_form', function(req, res){
-    // console.log(req);
+    var reqUrl = req.query['url'];
+    if(reqUrl == null){
+        res.status(400);
+        res.send('No url input.');
+    }
+    gfp(reqUrl, function(err, data){
+        if (err != null){
+            console.log(err);
+            res.status(400);
+        }
+        res.send(data);
+        // fs.writeFile('form.json', JSON.stringify(data), 'utf8', null);
+        console.log(data);
+    })
     res.send('Hello google form parser api.\n'+req.query['url']);
 });
 
