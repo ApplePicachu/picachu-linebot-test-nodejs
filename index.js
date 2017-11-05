@@ -24,11 +24,27 @@ bot.on('message', function (event) {
     //Print out now()
     client.query('SELECT NOW() as now', (err, res) => {
         if (err) {
-          console.log(err.stack)
+            console.log(err.stack)
         } else {
-          console.log(res.rows[0])
+            console.log(res.rows[0])
         }
-      })
+    });
+    client.query('\
+        CREATE TABLE IF NOT EXISTS saved_form (\
+        form_id SERIAL,\
+        table_id char(10) NOT NULL UNIQUE,\
+        user_group int NULL,\
+        line_id char(33) NULL,\
+        line_name varchar(50) NULL,\
+        update_time timestamp NULL,\
+        PRIMARY KEY(id)\
+    )', (err, res) => {
+        if (err) {
+            console.log(err.stack)
+        } else {
+            console.log(res.rows[0])
+        }
+    });
       
     // airtableBase('居家喘息').select({
     //     // Selecting the first 3 records in Grid view:
@@ -82,6 +98,10 @@ bot.on('message', function (event) {
 const app = express();
 const linebotParser = bot.parser();
 app.post('/', linebotParser);
+
+app.post('/api/parse/google_form', function(req, res){
+    res.send('Hello google form parser api.');
+});
 
 //因為 express 預設走 port 3000，而 heroku 上預設卻不是，要透過下列程式轉換
 var server = app.listen(process.env.PORT || 8080, function () {
