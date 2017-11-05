@@ -99,8 +99,8 @@ const app = express();
 const linebotParser = bot.parser();
 app.post('/', linebotParser);
 
-app.post('/api/parse/google_form', function(req, res){
-    res.send('Hello google form parser api.\n'+req.param['url', '']);
+app.get('/api/parse/google_form', function(req, res){
+    res.send('Hello google form parser api.\n'+req.query.url);
 });
 
 //因為 express 預設走 port 3000，而 heroku 上預設卻不是，要透過下列程式轉換
