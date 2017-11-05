@@ -100,6 +100,7 @@ const linebotParser = bot.parser();
 app.post('/', linebotParser);
 
 app.get('/api/parse/google_form', function(req, res){
+    console.log(req);
     res.send('Hello google form parser api.\n'+req.params['url']);
 });
 
