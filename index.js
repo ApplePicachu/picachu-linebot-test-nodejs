@@ -4,8 +4,6 @@ var Airtable = require('airtable');
 const {Client} = require('pg');
 const gfp = require('./google_form_parser');
 
-console.log(process.env.DATABASE_URL);
-
 const client = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: true,
@@ -22,8 +20,6 @@ var bot = linebot({
 });
 bot.on('message', function (event) {
     console.log(event); //把收到訊息的 event 印出來看看
-    //Print out now()
-    
       
     // airtableBase('居家喘息').select({
     //     // Selecting the first 3 records in Grid view:
@@ -86,7 +82,7 @@ app.get('/api/parse/google_form', function(req, res){
     }
     gfp(reqUrl, function(err, data){
         if (err != null){
-            console.log(err);
+            console.log(err.stack);
             res.status(400);
             res.send(err.toString());
         } else {
@@ -101,6 +97,7 @@ var server = app.listen(process.env.PORT || 8080, function () {
     var port = server.address().port;
     console.log("App now running on port", port);
 
+    //Print out NOW()
     client.query('SELECT NOW() as now', (err, res) => {
         if (err) {
             console.log(err.stack)
@@ -120,7 +117,7 @@ var server = app.listen(process.env.PORT || 8080, function () {
         cur_state INT NULL,\
         cur_state_extra VARCHAR(50) NULL,\
         state_update_time TIMESTAMP NOT NULL,\
-        PRIMARY KEY(id)\
+        PRIMARY KEY(id\
     )', (err, res) => {
         if (err) {
             console.log(err.stack)
