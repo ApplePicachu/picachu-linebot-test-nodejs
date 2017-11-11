@@ -1,7 +1,7 @@
 var linebot = require('linebot');
 var express = require('express');
 var Airtable = require('airtable');
-const {Client} = require('pg');
+const { Client } = require('pg');
 const gfp = require('./google_form_parser');
 
 const client = new Client({
@@ -20,7 +20,7 @@ var bot = linebot({
 });
 bot.on('message', function (event) {
     console.log(event); //把收到訊息的 event 印出來看看
-      
+
     // airtableBase('居家喘息').select({
     //     // Selecting the first 3 records in Grid view:
     //     maxRecords: 3,
@@ -74,14 +74,14 @@ const app = express();
 const linebotParser = bot.parser();
 app.post('/', linebotParser);
 
-app.get('/api/parse/google_form', function(req, res){
+app.get('/api/parse/google_form', function (req, res) {
     var reqUrl = req.query['url'];
-    if(reqUrl == null){
+    if (reqUrl == null) {
         res.status(400);
         res.send('No url input.');
     }
-    gfp(reqUrl, function(err, data){
-        if (err != null){
+    gfp(reqUrl, function (err, data) {
+        if (err != null) {
             console.log(err.stack);
             res.status(400);
             res.send(err.toString());
@@ -119,14 +119,15 @@ var server = app.listen(process.env.PORT || 8080, function () {
         state_update_time TIMESTAMP NOT NULL,\
         PRIMARY KEY(id)\
     )', (err, res) => {
-        if (err) {
-            console.log(err.stack);
-        } else {
-            console.log('CREATE ' + res.rows[0]);
-            await client.query('INSERT INTO service_users (line_id) VALUES (U828934c2ea1f46a8243398b2fe3e898c)');
-            // client.query('SELECT * FROM service_users', (err, res) => {
-            //     console.log(res.rows[0]);
-            // });
-        }
-    });
+            if (err) {
+                console.log(err.stack);
+            } else {
+                console.log('CREATE ' + res.rows[0]);
+                client.query('INSERT INTO service_users (line_id) VALUES (U828934c2ea1f46a8243398b2fe3e898c)', (err, res) => {
+                    client.query('SELECT * FROM service_users', (err, res) => {
+                        console.log(res.rows[0]);
+                    });
+                });
+            }
+        });
 });
