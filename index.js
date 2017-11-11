@@ -23,29 +23,7 @@ var bot = linebot({
 bot.on('message', function (event) {
     console.log(event); //把收到訊息的 event 印出來看看
     //Print out now()
-    client.query('SELECT NOW() as now', (err, res) => {
-        if (err) {
-            console.log(err.stack)
-        } else {
-            console.log(res.rows[0])
-        }
-    });
-    client.query('\
-        CREATE TABLE IF NOT EXISTS saved_form (\
-        form_id SERIAL,\
-        table_id char(10) NOT NULL UNIQUE,\
-        user_group int NULL,\
-        line_id char(33) NULL,\
-        line_name varchar(50) NULL,\
-        update_time timestamp NULL,\
-        PRIMARY KEY(id)\
-    )', (err, res) => {
-        if (err) {
-            console.log(err.stack)
-        } else {
-            console.log(res.rows[0])
-        }
-    });
+    
       
     // airtableBase('居家喘息').select({
     //     // Selecting the first 3 records in Grid view:
@@ -111,10 +89,10 @@ app.get('/api/parse/google_form', function(req, res){
             console.log(err);
             res.status(400);
             res.send(err.toString());
+        } else {
+            res.send(data);
+            console.log(data);
         }
-        res.send(data);
-        // fs.writeFile('form.json', JSON.stringify(data), 'utf8', null);
-        console.log(data);
     });
 });
 
@@ -122,4 +100,32 @@ app.get('/api/parse/google_form', function(req, res){
 var server = app.listen(process.env.PORT || 8080, function () {
     var port = server.address().port;
     console.log("App now running on port", port);
+
+    client.query('SELECT NOW() as now', (err, res) => {
+        if (err) {
+            console.log(err.stack)
+        } else {
+            console.log(res.rows[0])
+        }
+    });
+
+    client.query('\
+        CREATE TABLE IF NOT EXISTS service_users (\
+        id SERIAL,\
+        line_id CHAR(33) NOT NULL,\
+        line_name VARCHAR(50) NULL,\
+        user_group INT NULL,\
+        init_state INT NULL,\
+        init_state_extra VARCHAR(50) NULL,\
+        cur_state INT NULL,\
+        cur_state_extra VARCHAR(50) NULL,\
+        state_update_time TIMESTAMP NOT NULL,\
+        PRIMARY KEY(id)\
+    )', (err, res) => {
+        if (err) {
+            console.log(err.stack)
+        } else {
+            console.log(res.rows[0])
+        }
+    });
 });
