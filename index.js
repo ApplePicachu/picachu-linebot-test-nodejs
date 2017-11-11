@@ -18,11 +18,16 @@ var bot = linebot({
     channelAccessToken: process.env.LineBotChannelAccessToken,
     varify: true
 });
+bot.on('follow', function (event) {
+
+});
+bot.on('unfollow', function (event) {
+    
+});
 bot.on('message', function (event) {
     console.log(event); //把收到訊息的 event 印出來看看
     const insertUserText = 'INSERT INTO service_users(line_id, line_name, state_update_time) VALUES($1, $2, now())';
     event.source.profile().then(function (profile) {
-        bot.push(process.env.LineAdminUserID, { type: 'text', text: profile.displayName });
         client.query(insertUserText, ['U828934c2ea1f46a8243398b2fe3e898c', profile.displayName], (err, res) => {
             if (err) {
                 console.log(err.stack);
@@ -41,7 +46,7 @@ bot.on('message', function (event) {
         });
     });
     if (event.source.userId == process.env.LineAdminUserID) {
-        switch (event.message.text){
+        switch (event.message.text) {
             case 'drop':
                 client.query('\
                 DROP TABLE IF EXISTS service_users;\
@@ -57,12 +62,12 @@ bot.on('message', function (event) {
                 state_update_time TIMESTAMP NOT NULL,\
                 PRIMARY KEY(id)\
             )').then(function (res) {
-                bot.push(process.env.LineAdminUserID, { type: 'text', text: 'Drop success.' });
-            }).catch(function(err) {
-                console.log(err.stack);
-                bot.push(process.env.LineAdminUserID, { type: 'text', text: err.stack });
-            })
-            break;
+                        bot.push(process.env.LineAdminUserID, { type: 'text', text: 'Drop success.' });
+                    }).catch(function (err) {
+                        console.log(err.stack);
+                        bot.push(process.env.LineAdminUserID, { type: 'text', text: err.stack });
+                    });
+                break;
         }
     }
 
@@ -114,7 +119,9 @@ bot.on('message', function (event) {
 
 
 });
+bot.on('postback', function(event) {
 
+});
 const app = express();
 const linebotParser = bot.parser();
 app.post('/', linebotParser);
