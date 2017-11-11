@@ -132,7 +132,7 @@ var server = app.listen(process.env.PORT || 8080, function () {
                             if (err) {
                                 console.log(err.stack);
                             } else {
-                                console.log('SELECT' + res.rows[0]);
+                                console.log('SELECT' + res.rows[0].toString());
                             }
                         });
                     }
