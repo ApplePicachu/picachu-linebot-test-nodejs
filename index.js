@@ -123,7 +123,8 @@ var server = app.listen(process.env.PORT || 8080, function () {
                 console.log(err.stack);
             } else {
                 console.log('CREATE ' + res.rows[0]);
-                client.query('INSERT INTO service_users (line_id) VALUES (U828934c2ea1f46a8243398b2fe3e898c)', (err, res) => {
+                var text = 'INSERT INTO service_users(line_id) VALUES($1)';
+                client.query(text, ['U828934c2ea1f46a8243398b2fe3e898c'], (err, res) => {
                     if (err) {
                         console.log(err.stack);
                     } else {
