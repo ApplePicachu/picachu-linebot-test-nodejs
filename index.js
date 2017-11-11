@@ -42,9 +42,9 @@ bot.on('message', function (event) {
     //     }
 
     // });
-    if (event.source.userId == process.env.LineAdminUserID) {
-        event.reply({type: 'text', text: 'Hello administrator.'});
-    }
+    // if (event.source.userId == process.env.LineAdminUserID) {
+    //     event.reply({type: 'text', text: 'Hello administrator.'});
+    // }
 
     // airtableBase('居家喘息').select({
     //     // Selecting the first 3 records in Grid view:
