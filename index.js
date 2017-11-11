@@ -21,27 +21,25 @@ var bot = linebot({
 bot.on('message', function (event) {
     console.log(event); //把收到訊息的 event 印出來看看
     const insertUserText = 'INSERT INTO service_users(line_id, line_name, state_update_time) VALUES($1, $2, now())';
-    event.source.profile((err, profile) => {
-        if (err) {
-            console.log(err.stack);
-        } else {
-            event.reply('Hello ' + profile.displayName);
-        }
+    event.source.profile().then(function (profile) {
+        // event.reply('Hello ' + profile.displayName);
+        client.push(process.env.LineAdminUserID, { type: 'text', text: profile.displayName });
+        client.query(insertUserText, ['U828934c2ea1f46a8243398b2fe3e898c', profile.displayName], (err, res) => {
+            if (err) {
+                console.log(err.stack);
+            } else {
+                client.query('SELECT * FROM service_users', (err, res) => {
+                    if (err) {
+                        console.log(err.stack);
+                    } else {
+                        console.log('SELECT %j', res.rows[0]);
+                    }
+                });
+            }
+        }).catch(function (err) {
+            client.push(process.env.LineAdminUserID, { type: 'text', text: err.stack });
+        });
     });
-    // client.query(insertUserText, ['U828934c2ea1f46a8243398b2fe3e898c', ], (err, res) => {
-    //     if (err) {
-    //         console.log(err.stack);
-    //     } else {
-    //         client.query('SELECT * FROM service_users', (err, res) => {
-    //             if (err) {
-    //                 console.log(err.stack);
-    //             } else {
-    //                 console.log('SELECT %j', res.rows[0]);
-    //             }
-    //         });
-    //     }
-
-    // });
     // if (event.source.userId == process.env.LineAdminUserID) {
     //     event.reply({type: 'text', text: 'Hello administrator.'});
     // }
