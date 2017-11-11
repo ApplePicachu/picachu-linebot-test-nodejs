@@ -36,12 +36,35 @@ bot.on('message', function (event) {
                 });
             }
         }).catch(function (err) {
+            console.log(err.stack);
             bot.push(process.env.LineAdminUserID, { type: 'text', text: err.stack });
         });
     });
-    // if (event.source.userId == process.env.LineAdminUserID) {
-    //     event.reply({type: 'text', text: 'Hello administrator.'});
-    // }
+    if (event.source.userId == process.env.LineAdminUserID) {
+        switch (event.message.text){
+            case 'drop':
+                client.query('\
+                DROP TABLE IF EXISTS service_users;\
+                CREATE TABLE IF NOT EXISTS service_users (\
+                id SERIAL,\
+                line_id CHAR(33) NOT NULL,\
+                line_name VARCHAR(50) NULL,\
+                user_group INT NULL,\
+                init_state INT NULL,\
+                init_state_extra VARCHAR(50) NULL,\
+                cur_state INT NULL,\
+                cur_state_extra VARCHAR(50) NULL,\
+                state_update_time TIMESTAMP NOT NULL,\
+                PRIMARY KEY(id)\
+            )').then(function (res) {
+                bot.push(process.env.LineAdminUserID, { type: 'text', text: 'Drop success.' });
+            }).catch(function(err) {
+                console.log(err.stack);
+                bot.push(process.env.LineAdminUserID, { type: 'text', text: err.stack });
+            })
+            break;
+        }
+    }
 
     // airtableBase('居家喘息').select({
     //     // Selecting the first 3 records in Grid view:
