@@ -117,12 +117,17 @@ var server = app.listen(process.env.PORT || 8080, function () {
         cur_state INT NULL,\
         cur_state_extra VARCHAR(50) NULL,\
         state_update_time TIMESTAMP NOT NULL,\
-        PRIMARY KEY(id\
+        PRIMARY KEY(id)\
     )', (err, res) => {
         if (err) {
-            console.log(err.stack)
+            console.log(err.stack);
         } else {
-            console.log(res.rows[0])
+            console.log(res.rows[0]);
+            client.query('INSERT INTO service_users (line_id) VALUES (U828934c2ea1f46a8243398b2fe3e898c)', (err, res) => {
+                client.query('SELECT * FROM service_users', (err, res) => {
+                    console.log(res.rows[0]);
+                });
+            });
         }
     });
 });
