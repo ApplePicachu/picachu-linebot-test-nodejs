@@ -8,6 +8,7 @@ const client = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: true,
 });
+client.connect();
 
 var airtableBase = new Airtable({ apiKey: process.env.AirtableApiKey }).base(process.env.AirtableTableKey);
 
@@ -96,8 +97,6 @@ var server = app.listen(process.env.PORT || 8080, function () {
     var port = server.address().port;
     console.log("App now running on port", port);
 
-    await client.connect();
-
     //Print out NOW()
     client.query('SELECT NOW() as now', (err, res) => {
         if (err) {
@@ -125,9 +124,9 @@ var server = app.listen(process.env.PORT || 8080, function () {
         } else {
             console.log('CREATE ' + res.rows[0]);
             await client.query('INSERT INTO service_users (line_id) VALUES (U828934c2ea1f46a8243398b2fe3e898c)');
-            // client.query('SELECT * FROM service_users', (err, res) => {
-            //     console.log(res.rows[0]);
-            // });
+            client.query('SELECT * FROM service_users', (err, res) => {
+                console.log(res.rows[0]);
+            });
         }
     });
 });
