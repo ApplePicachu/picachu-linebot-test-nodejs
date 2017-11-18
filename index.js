@@ -144,7 +144,7 @@ var server = app.listen(process.env.PORT || 8080, function () {
         if (err) {
             console.log(err.stack);
         } else {
-            console.log(res.rows[0].now);
+            // console.log(res.rows[0].now);
         }
     });
 
