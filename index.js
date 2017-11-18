@@ -140,28 +140,32 @@ var server = app.listen(process.env.PORT || 8080, function () {
     console.log("App now running on port", port);
 
     //Print out NOW()
-    client.query('SELECT NOW() as now', (err, res) => {
+    client.query('DROP TABLE IF EXISTS service_users;SELECT NOW() as now;', (err, res) => {
         if (err) {
-            console.log(err.stack)
+            console.log(err.stack);
         } else {
-            console.log(res.rows[0])
+            console.log(res.rows[0].now);
         }
     });
+
     checkTableExists(client, (err, res) => {
         if (err) {
             console.log(err.stack);
         } else {
-            console.log('Check table exists \n' + res.rows[0].exists + '\n' +JSON.stringify(res));
+            if (!res.rows[0].exists) {
+                dropAndCreateTable(client, (err, res) => {
+                    if (err) {
+                        console.log(err.stack);
+                    } else {
+                        console.log('CREATE ' + res);
+                    }
+                });
+            }
+            console.log('Check table exists \n' + res.rows[0].exists + '\n' + JSON.stringify(res));
         }
     });
-    // dropAndCreateTable(client, (err, res) => {
-    //     if (err) {
-    //         console.log(err.stack);
-    //     } else {
-    //         console.log('CREATE ' + res);
-    //     }
-    // });
 });
+
 function checkTableExists(client, callback) {
     client.query('\
     SELECT EXISTS (\
