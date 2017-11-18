@@ -54,7 +54,7 @@ bot.on('message', function (event) {
                 CREATE TABLE "service_users" (\
                     "line_id" char(33) NOT NULL UNIQUE,\
                     "line_name" varchar(20),\
-                    "user_group" int NOT NULL DEFAULT \'0x00000000\',\
+                    "user_group" int NOT NULL DEFAULT \'0\',\
                     "status_init" bigint,\
                     "status_init_extra" TEXT,\
                     "status_current" bigint,\
@@ -194,7 +194,7 @@ function createTable(client, callback) {
     CREATE TABLE "service_users" (\
         "line_id" char(33) NOT NULL UNIQUE,\
         "line_name" varchar(20),\
-        "user_group" int NOT NULL DEFAULT \'0x00000000\',\
+        "user_group" int NOT NULL DEFAULT \'0\',\
         "status_init" bigint,\
         "status_init_extra" TEXT,\
         "status_current" bigint,\
