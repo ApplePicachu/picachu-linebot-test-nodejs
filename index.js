@@ -151,7 +151,7 @@ var server = app.listen(process.env.PORT || 8080, function () {
         if (err) {
             console.log(err.stack);
         } else {
-            console.log('Check table exists ' + res);
+            console.log('Check table exists ' + JSON.stringify(res));
         }
     });
     // dropAndCreateTable(client, (err, res) => {
