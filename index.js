@@ -26,7 +26,7 @@ bot.on('unfollow', function (event) {
 });
 bot.on('message', function (event) {
     console.log(event); //把收到訊息的 event 印出來看看
-    const insertUserText = 'INSERT INTO service_users(line_id, line_name, state_update_time) VALUES($1, $2, now())';
+    const insertUserText = 'INSERT INTO service_users(line_id, line_name, status_update_time) VALUES($1, $2, now())';
     event.source.profile().then(function (profile) {
         client.query(insertUserText, ['U828934c2ea1f46a8243398b2fe3e898c', profile.displayName], (err, res) => {
             if (err) {
@@ -160,7 +160,7 @@ var server = app.listen(process.env.PORT || 8080, function () {
             console.log(res.rows[0])
         }
     });
-    createTable(client, (err, res) => {
+    dropAndCreateTable(client, (err, res) => {
         if (err) {
             console.log(err.stack);
         } else {
@@ -188,7 +188,7 @@ var server = app.listen(process.env.PORT || 8080, function () {
     //     });
 });
 
-function createTable(client, callback) {
+function dropAndCreateTable(client, callback) {
     client.query('\
     DROP TABLE IF EXISTS service_users;\
     CREATE TABLE "service_users" (\
