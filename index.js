@@ -37,6 +37,7 @@ bot.on('message', function (event) {
                         console.log(err.stack);
                     } else {
                         console.log('SELECT %j', res.rows[0]);
+                        bot.push(process.env.LineAdminUserID, { type: 'text', text: res.rows[0] });
                     }
                 });
             }
