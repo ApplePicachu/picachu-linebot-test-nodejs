@@ -164,7 +164,7 @@ var server = app.listen(process.env.PORT || 8080, function () {
         if (err) {
             console.log(err.stack);
         } else {
-            console.log('CREATE ' + res.rows[0]);
+            console.log('CREATE ' + res);
         }
     })
     // client.query('\
