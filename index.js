@@ -22,7 +22,7 @@ bot.on('follow', function (event) {
 
 });
 bot.on('unfollow', function (event) {
-    
+
 });
 bot.on('message', function (event) {
     console.log(event); //把收到訊息的 event 印出來看看
@@ -50,18 +50,20 @@ bot.on('message', function (event) {
             case 'drop':
                 client.query('\
                 DROP TABLE IF EXISTS service_users;\
-                CREATE TABLE IF NOT EXISTS service_users (\
-                id SERIAL,\
-                line_id CHAR(33) NOT NULL,\
-                line_name VARCHAR(50) NULL,\
-                user_group INT NULL,\
-                init_state INT NULL,\
-                init_state_extra VARCHAR(50) NULL,\
-                cur_state INT NULL,\
-                cur_state_extra VARCHAR(50) NULL,\
-                state_update_time TIMESTAMP NOT NULL,\
-                PRIMARY KEY(id)\
-            )').then(function (res) {
+                CREATE TABLE "service_users" (\
+                    "line_id" char(33) NOT NULL UNIQUE,\
+                    "line_name" varchar(20),\
+                    "user_group" int NOT NULL DEFAULT \'0x00000000\',\
+                    "status_init" bigint,\
+                    "status_init_extra" TEXT,\
+                    "status_current" bigint,\
+                    "status_current_extra" TEXT,\
+                    "info_json" TEXT,\
+                    "status_update_time" timestamp with time zone NOT NULL,\
+                    CONSTRAINT service_users_pk PRIMARY KEY ("line_id")\
+                ) WITH (\
+                OIDS=FALSE\
+                );').then(function (res) {
                         bot.push(process.env.LineAdminUserID, { type: 'text', text: 'Drop success.' });
                     }).catch(function (err) {
                         console.log(err.stack);
@@ -119,7 +121,7 @@ bot.on('message', function (event) {
 
 
 });
-bot.on('postback', function(event) {
+bot.on('postback', function (event) {
 
 });
 const app = express();
@@ -157,24 +159,49 @@ var server = app.listen(process.env.PORT || 8080, function () {
             console.log(res.rows[0])
         }
     });
-
-    client.query('\
-        CREATE TABLE IF NOT EXISTS service_users (\
-        id SERIAL,\
-        line_id CHAR(33) NOT NULL,\
-        line_name VARCHAR(50) NULL,\
-        user_group INT NULL,\
-        init_state INT NULL,\
-        init_state_extra VARCHAR(50) NULL,\
-        cur_state INT NULL,\
-        cur_state_extra VARCHAR(50) NULL,\
-        state_update_time TIMESTAMP NOT NULL,\
-        PRIMARY KEY(id)\
-    )', (err, res) => {
-            if (err) {
-                console.log(err.stack);
-            } else {
-                // console.log('CREATE ' + res.rows[0]);
-            }
-        });
+    createTable(client, (err, res) => {
+        if (err) {
+            console.log(err.stack);
+        } else {
+            console.log('CREATE ' + res.rows[0]);
+        }
+    })
+    // client.query('\
+    //     CREATE TABLE IF NOT EXISTS service_users (\
+    //     id SERIAL,\
+    //     line_id CHAR(33) NOT NULL,\
+    //     line_name VARCHAR(50) NULL,\
+    //     user_group INT NULL,\
+    //     init_state INT NULL,\
+    //     init_state_extra VARCHAR(50) NULL,\
+    //     cur_state INT NULL,\
+    //     cur_state_extra VARCHAR(50) NULL,\
+    //     state_update_time TIMESTAMP NOT NULL,\
+    //     PRIMARY KEY(id)\
+    // )', (err, res) => {
+    //         if (err) {
+    //             console.log(err.stack);
+    //         } else {
+    //             // console.log('CREATE ' + res.rows[0]);
+    //         }
+    //     });
 });
+
+function createTable(client, callback) {
+    client.query('\
+    DROP TABLE IF EXISTS service_users;\
+    CREATE TABLE "service_users" (\
+        "line_id" char(33) NOT NULL UNIQUE,\
+        "line_name" varchar(20),\
+        "user_group" int NOT NULL DEFAULT \'0x00000000\',\
+        "status_init" bigint,\
+        "status_init_extra" TEXT,\
+        "status_current" bigint,\
+        "status_current_extra" TEXT,\
+        "info_json" TEXT,\
+        "status_update_time" timestamp with time zone NOT NULL,\
+        CONSTRAINT service_users_pk PRIMARY KEY ("line_id")\
+    ) WITH (\
+    OIDS=FALSE\
+    );', callback);
+};
