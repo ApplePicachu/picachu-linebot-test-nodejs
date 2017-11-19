@@ -63,27 +63,6 @@ bot.on('message', function (event) {
                 });
             }
         });
-
-        // event.source.profile().then(function (profile) {
-
-        //     client.query(insertUserText, [profile.userId, profile.displayName], (err, res) => {
-        //         if (err) {
-        //             console.log(err.stack);
-        //         } else {
-        //             client.query('SELECT * FROM service_users', (err, res) => {
-        //                 if (err) {
-        //                     console.log(err.stack);
-        //                 } else {
-        //                     console.log('SELECT %j', res.rows[0]);
-        //                     bot.push(process.env.LineAdminUserID, { type: 'text', text: res.rows[0] });
-        //                 }
-        //             });
-        //         }
-        //     }).catch(function (err) {
-        //         console.log(err.stack);
-        //         bot.push(process.env.LineAdminUserID, { type: 'text', text: err.stack });
-        //     });
-        // });
     }
 
     if (event.source.userId == process.env.LineAdminUserID) {
@@ -197,20 +176,26 @@ var server = app.listen(process.env.PORT || 8080, function () {
             console.log(res.rows[0].now);
         }
     });
-
-    sqlManager.checkExistsTableUser((err, res) => {
+    sqlManager.dropAndCreateTableUser((err, res) => {
         if (err) {
             console.log(err.stack);
         } else {
-            if (!res) {
-                sqlManager.dropAndCreateTableUser((err, res) => {
-                    if (err) {
-                        console.log(err.stack);
-                    } else {
-                        console.log('CREATE ' + JSON.stringify(res));
-                    }
-                });
-            }
+            console.log('CREATE ' + JSON.stringify(res));
         }
     });
+    // sqlManager.checkExistsTableUser((err, res) => {
+    //     if (err) {
+    //         console.log(err.stack);
+    //     } else {
+    //         if (!res) {
+    //             sqlManager.dropAndCreateTableUser((err, res) => {
+    //                 if (err) {
+    //                     console.log(err.stack);
+    //                 } else {
+    //                     console.log('CREATE ' + JSON.stringify(res));
+    //                 }
+    //             });
+    //         }
+    //     }
+    // });
 });
