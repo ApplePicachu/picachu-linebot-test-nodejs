@@ -51,11 +51,11 @@ bot.on('message', function (event) {
             });
         });
     }
-   
+
     if (event.source.userId == process.env.LineAdminUserID) {
         switch (event.message.text.toLowerCase()) {
             case 'drop':
-                dropAndCreateTable(client, (err, res) => {
+                sqlManager.dropAndCreateTable(client, (err, res) => {
                     if (err) {
                         console.log(err.stack);
                         bot.push(process.env.LineAdminUserID, { type: 'text', text: err.stack });
