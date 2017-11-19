@@ -55,7 +55,7 @@ bot.on('message', function (event) {
     if (event.source.userId == process.env.LineAdminUserID) {
         switch (event.message.text.toLowerCase()) {
             case 'drop':
-                sqlManager.dropAndCreateTable(client, (err, res) => {
+                sqlManager.dropAndCreateTableUser((err, res) => {
                     if (err) {
                         console.log(err.stack);
                         bot.push(process.env.LineAdminUserID, { type: 'text', text: err.stack });
@@ -169,7 +169,7 @@ var server = app.listen(process.env.PORT || 8080, function () {
             console.log(err.stack);
         } else {
             if (!res) {
-                sqlManager.dropAndCreateTableUser(client, (err, res) => {
+                sqlManager.dropAndCreateTableUser((err, res) => {
                     if (err) {
                         console.log(err.stack);
                     } else {
