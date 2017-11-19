@@ -51,7 +51,7 @@ bot.on('message', function (event) {
                                     } else {
                                         if (res.rowCount > 0) {
                                             //Print user.
-                                            bot.push(process.env.LineAdminUserID, { type: 'text', text: 'Hello new user ' + res.row[0].line_name + '.' });
+                                            bot.push(process.env.LineAdminUserID, { type: 'text', text: 'Hello new user ' + res.rows[0].line_name + '.' });
                                         } else {
                                             bot.push(process.env.LineAdminUserID, { type: 'text', text: 'User not found.' });
                                         }
