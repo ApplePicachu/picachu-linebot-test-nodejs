@@ -151,16 +151,16 @@ var server = app.listen(process.env.PORT || 8080, function () {
         }
     });
 
-    sqlManager.checkUserTableExists((err, res) => {
+    sqlManager.checkExistsTableUser((err, res) => {
         if (err) {
             console.log(err.stack);
         } else {
-            if (!res.rows[0].exists) {
-                dropAndCreateTable(client, (err, res) => {
+            if (!res) {
+                sqlManager.dropAndCreateTableUser(client, (err, res) => {
                     if (err) {
                         console.log(err.stack);
                     } else {
-                        console.log('Check table exists \n' + res);
+                        console.log('CREATE ' + JSON.stringify(res));
                     }
                 });
             }
@@ -184,15 +184,6 @@ var server = app.listen(process.env.PORT || 8080, function () {
     // });
 });
 
-function checkTableExists(client, callback) {
-    client.query('\
-    SELECT EXISTS (\
-        SELECT 1 \
-        FROM   pg_tables\
-        WHERE  tablename = \'service_users\'\
-        );\
-    ', callback);
-}
 function dropAndCreateTable(client, callback) {
     client.query('\
     DROP TABLE IF EXISTS service_users;\
