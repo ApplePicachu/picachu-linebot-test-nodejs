@@ -4,6 +4,8 @@ SQLManager = function(client) {
         checkTableExists(client, service_users, callback);
     }
 }
+module.exports = SQLManager;
+
 function checkTableExists(client, tableName, callback) {
     client.query('\
     SELECT EXISTS (\
