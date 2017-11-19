@@ -21,6 +21,14 @@ SQLManager = function (client) {
         OIDS=FALSE\
         );', callback);
     }
+    this.selectUserById = function (userId, callback) {
+        const sqlCmd = 'SELECT * FROM service_users WHERE line_id = $1';
+        client.query(sqlCmd, [userId], callback);
+    }
+    this.insertUser = function (profile, callback) {
+        const sqlCmd = 'INSERT INTO service_users(line_id, line_name, status_update_time) VALUES($1, $2, now())';
+        client.query(sqlCmd, [profile.userId, profile.displayName], callback);
+    }
 }
 module.exports = SQLManager;
 

@@ -31,25 +31,32 @@ bot.on('message', function (event) {
     console.log(event); //把收到訊息的 event 印出來看看
     const insertUserText = 'INSERT INTO service_users(line_id, line_name, status_update_time) VALUES($1, $2, now())';
     if (event.source.type == 'user') {
-        event.source.profile().then(function (profile) {
-            client.query(insertUserText, [profile.userId, profile.displayName], (err, res) => {
-                if (err) {
-                    console.log(err.stack);
-                } else {
-                    client.query('SELECT * FROM service_users', (err, res) => {
-                        if (err) {
-                            console.log(err.stack);
-                        } else {
-                            console.log('SELECT %j', res.rows[0]);
-                            bot.push(process.env.LineAdminUserID, { type: 'text', text: res.rows[0] });
-                        }
-                    });
-                }
-            }).catch(function (err) {
-                console.log(err.stack);
-                bot.push(process.env.LineAdminUserID, { type: 'text', text: err.stack });
-            });
-        });
+        sqlManager.selectUserById(event.source.userId, (err, res) => {
+            if (res.rows) {
+                bot.push(process.env.LineAdminUserID, { type: 'text', text: 'User exists.'+JSON.stringify(res.rows[0]) });
+            }
+        })
+        
+        // event.source.profile().then(function (profile) {
+            
+        //     client.query(insertUserText, [profile.userId, profile.displayName], (err, res) => {
+        //         if (err) {
+        //             console.log(err.stack);
+        //         } else {
+        //             client.query('SELECT * FROM service_users', (err, res) => {
+        //                 if (err) {
+        //                     console.log(err.stack);
+        //                 } else {
+        //                     console.log('SELECT %j', res.rows[0]);
+        //                     bot.push(process.env.LineAdminUserID, { type: 'text', text: res.rows[0] });
+        //                 }
+        //             });
+        //         }
+        //     }).catch(function (err) {
+        //         console.log(err.stack);
+        //         bot.push(process.env.LineAdminUserID, { type: 'text', text: err.stack });
+        //     });
+        // });
     }
 
     if (event.source.userId == process.env.LineAdminUserID) {
