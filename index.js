@@ -32,6 +32,7 @@ bot.on('message', function (event) {
     const insertUserText = 'INSERT INTO service_users(line_id, line_name, status_update_time) VALUES($1, $2, now())';
     if (event.source.type == 'user') {
         sqlManager.selectUserById(event.source.userId, (err, res) => {
+            console.log(JSON.stringify(res));
             if (res.rows) {
                 bot.push(process.env.LineAdminUserID, { type: 'text', text: 'User exists.'+JSON.stringify(res.rows[0]) });
             }
