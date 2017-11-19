@@ -69,8 +69,9 @@ bot.on('message', function (event) {
                     if (err) {
                         console.log(err.stack);
                     } else {
+                        bot.push(process.env.LineAdminUserID, { type: 'text', text: 'hello' });
+                        // bot.push(process.env.LineAdminUserID, { type: 'text', text: res.rows[0] });
                         console.log('SELECT %j', res.rows[0]);
-                        bot.push(process.env.LineAdminUserID, { type: 'text', text: res.rows[0] });
                     }
                 });
                 break;
