@@ -160,11 +160,10 @@ var server = app.listen(process.env.PORT || 8080, function () {
                     if (err) {
                         console.log(err.stack);
                     } else {
-                        console.log('CREATE ' + res);
+                        console.log('Check table exists \n' + res);
                     }
                 });
             }
-            console.log('Check table exists \n' + res.rows[0].exists + '\n' + JSON.stringify(res));
         }
     });
     // checkTableExists(client, (err, res) => {
