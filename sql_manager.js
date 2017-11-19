@@ -1,7 +1,7 @@
 SQLManager = function(client) {
     this.client = client;
     this.checkUserTableExists = function(callback){
-        checkTableExists(client, service_users, callback);
+        checkTableExists(client, 'service_users', callback);
     }
 }
 module.exports = SQLManager;
@@ -15,3 +15,4 @@ function checkTableExists(client, tableName, callback) {
         );\
     ', [tableName], callback);
 }
+
