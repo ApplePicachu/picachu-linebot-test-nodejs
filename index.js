@@ -33,13 +33,39 @@ bot.on('message', function (event) {
     if (event.source.type == 'user') {
         sqlManager.selectUserById(event.source.userId, (err, res) => {
             console.log(JSON.stringify(res));
-            if (res.rows) {
-                bot.push(process.env.LineAdminUserID, { type: 'text', text: 'User exists.'+JSON.stringify(res.rows[0]) });
+            if (res.rowCount > 0) {
+                //Print user.
+                bot.push(process.env.LineAdminUserID, { type: 'text', text: 'User exists.' + JSON.stringify(res.rows[0]) });
+            } else {
+                //Insert user.
+                event.source.profile().then(function (profile) {
+                    sqlManager.insertUser(profile, (err, res) => {
+                        if (err) {
+                            console.log(err.stack);
+                        } else {
+                            client.query('SELECT * FROM service_users', (err, res) => {
+                                if (err) {
+                                    console.log(err.stack);
+                                } else {
+                                    console.log('SELECT %j', res.rows[0]);
+                                    bot.push(process.env.LineAdminUserID, { type: 'text', text: res.rows[0] });
+                                }
+                            });
+                        }
+                    });
+                    client.query(insertUserText, [profile.userId, profile.displayName], ).catch(function (err) {
+                        console.log(err.stack);
+                        bot.push(process.env.LineAdminUserID, { type: 'text', text: err.stack });
+                    });
+                }).catch(function (err) {
+                    console.log(err.stack);
+                    bot.push(process.env.LineAdminUserID, { type: 'text', text: err.stack });
+                });
             }
-        })
-        
+        });
+
         // event.source.profile().then(function (profile) {
-            
+
         //     client.query(insertUserText, [profile.userId, profile.displayName], (err, res) => {
         //         if (err) {
         //             console.log(err.stack);
