@@ -51,7 +51,7 @@ bot.on('message', function (event) {
                                     } else {
                                         if (res.rowCount > 0) {
                                             //Print user.
-                                            bot.push(process.env.LineAdminUserID, { type: 'text', text: 'User exists.' + JSON.stringify(res.rows[0]) });
+                                            bot.push(process.env.LineAdminUserID, { type: 'text', text: 'Hello new user ' + res.row[0].line_name + '.' });
                                         } else {
                                             bot.push(process.env.LineAdminUserID, { type: 'text', text: 'User not found.' });
                                         }
@@ -183,7 +183,7 @@ var server = app.listen(process.env.PORT || 8080, function () {
         if (err) {
             console.log(err.stack);
         } else {
-            console.log('CREATE ' + JSON.stringify(res));
+            console.log('DROP ' + JSON.stringify(res));
         }
     });
     // sqlManager.checkExistsTableUser((err, res) => {
