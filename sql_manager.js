@@ -7,7 +7,8 @@ SQLManager = function(client) {
 module.exports = SQLManager;
 
 function checkTableExists(client, tableName, callback) {
-    const sqlCmd = 'SELECT EXISTS ( SELECT 1 FROM pg_tables WHERE tablename = \' $1 \' );';
+    const sqlCmd = 'SELECT EXISTS ( SELECT 1 FROM pg_tables WHERE tablename = $1 );';
+    console.log(sqlCmd);
     client.query(sqlCmd, [tableName], callback);
 }
 
