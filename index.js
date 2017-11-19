@@ -3,12 +3,15 @@ var express = require('express');
 var Airtable = require('airtable');
 const { Client } = require('pg');
 const gfp = require('./google_form_parser');
+const sm = require('./sql_manager');
 
 const client = new Client({
     connectionString: process.env.DATABASE_URL,
     ssl: true,
 });
 client.connect();
+
+var sqlManager = new sm(client);
 
 var airtableBase = new Airtable({ apiKey: process.env.AirtableApiKey }).base(process.env.AirtableTableKey);
 
@@ -140,15 +143,15 @@ var server = app.listen(process.env.PORT || 8080, function () {
     console.log("App now running on port", port);
 
     //Print out NOW()
-    client.query('DROP TABLE IF EXISTS service_users;SELECT NOW() as now;', (err, res) => {
+    client.query('SELECT NOW() as now;', (err, res) => {
         if (err) {
             console.log(err.stack);
         } else {
-            // console.log(res.rows[0].now);
+            console.log(res.rows[0].now);
         }
     });
 
-    checkTableExists(client, (err, res) => {
+    sqlManager.checkUserTableExists((err, res) => {
         if (err) {
             console.log(err.stack);
         } else {
@@ -164,6 +167,22 @@ var server = app.listen(process.env.PORT || 8080, function () {
             console.log('Check table exists \n' + res.rows[0].exists + '\n' + JSON.stringify(res));
         }
     });
+    // checkTableExists(client, (err, res) => {
+    //     if (err) {
+    //         console.log(err.stack);
+    //     } else {
+    //         if (!res.rows[0].exists) {
+    //             dropAndCreateTable(client, (err, res) => {
+    //                 if (err) {
+    //                     console.log(err.stack);
+    //                 } else {
+    //                     console.log('CREATE ' + res);
+    //                 }
+    //             });
+    //         }
+    //         console.log('Check table exists \n' + res.rows[0].exists + '\n' + JSON.stringify(res));
+    //     }
+    // });
 });
 
 function checkTableExists(client, callback) {
